@@ -10,9 +10,6 @@ jobs:
               with:
                 distribution: 'adopt-hotspot'
                 java-version: '11'
-            
-            # Create a new folder
-            - run: mkdir maxtime-jre
 
             # Create the JRE
             - run: jlink --add-modules ALL-MODULE-PATH --output ./maxtime-jre --strip-debug --no-man-pages --no-header-files --compress=2
