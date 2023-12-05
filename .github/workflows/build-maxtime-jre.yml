@@ -1,8 +1,9 @@
 name: Create MaxTime JRE for Java 11
-run-name: creating-maxtime-jre
+run-name: create-maxtime-jre11
 on: [push]
 jobs:
     Build-MaxTime-JRE:
+        # Professor uses Windows 10 so...
         runs-on: windows-latest
         steps:
             # Setup Java
