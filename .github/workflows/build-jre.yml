@@ -1,8 +1,8 @@
-name: Create MaxTime JRE11
+name: Create MaxTime JRE for Java 11
 run-name: creating-maxtime-jre
 on: [push]
 jobs:
-    Build-JRE:
+    Build-MaxTime-JRE:
         runs-on: windows-latest
         steps:
             # Setup Java
@@ -17,7 +17,7 @@ jobs:
             # Package as a zip
             - uses: vimtor/action-zip@v1.1
               with:
-                files: ./maxtime-jre/*
+                files: ./maxtime-jre/
                 dest: maxtime-jre.zip
             
             # Upload as artifact
