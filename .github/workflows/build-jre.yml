@@ -8,7 +8,7 @@ jobs:
             # Setup Java
             - uses: actions/setup-java@v4
               with:
-                distribution: 'oracle'
+                distribution: 'adopt-hotspot'
                 java-version: '11'
             
             # Create a new folder
