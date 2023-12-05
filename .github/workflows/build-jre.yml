@@ -1,0 +1,31 @@
+name: Create MaxTime JRE11
+run-name: creating-maxtime-jre
+on: [push]
+jobs:
+    Build-JRE:
+        runs-on: windows-latest
+        steps:
+            # Setup Java
+            - uses: actions/setup-java@v4
+              with:
+                distribution: 'oracle'
+                java-version: '11'
+            
+            # Create a new folder
+            - run: mkdir maxtime-jre
+
+            # Create the JRE
+            - run: jlink --add-modules ALL-MODULE-PATH --output ./maxtime-jre --strip-debug --no-man-pages --no-header-files --compress=2
+            
+            # Package as a zip
+            - uses: vimtor/action-zip@v1.1
+              with:
+                files: ./maxtime-jre
+                dest: maxtime-jre.zip
+            
+            # Upload as artifact
+            - uses: actions/upload-artifact@v3
+              with:
+                name: maxtime-jre-latest
+                path: ./maxtime-jre.zip
+                if-no-files-found: error
