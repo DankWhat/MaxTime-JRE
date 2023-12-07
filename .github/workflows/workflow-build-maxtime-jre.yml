@@ -28,11 +28,6 @@ jobs:
     # Use the specified machine
     runs-on: ${{ inputs.runsOn }}
 
-    # Configure outputs
-    outputs:
-      MaxTimeJREVersion: ${{ inputs.javaVersion }}
-      MachineUsed: ${{ inputs.runsOn }}
-
     steps:
       # Setup Java with specified version
       - uses: actions/setup-java@v4
@@ -40,18 +35,12 @@ jobs:
           distribution: 'adopt-hotspot'
           java-version: ${{ inputs.javaVersion }}
       
-      # Create the JRE
+      # Create the JRE with jlink
       - run: jlink --add-modules ALL-MODULE-PATH --no-header-files --no-man-pages --strip-debug --compress=2 --output ./maxtime-jre
-
-      # Package as a .zip
-      - uses: vimtor/action-zip@v1.1
-        with:
-          files: ./maxtime-jre/
-          dest: ./maxtime-jre.zip
       
       # Upload as an artifact
       - uses: actions/upload-artifact@v3
         with:
           name: maxtime-jre-v${{ inputs.javaVersion }}-${{ inputs.runsOn }}
-          path: ./maxtime-jre.zip
+          path: ./maxtime-jre/*
           if-no-files-found: error
