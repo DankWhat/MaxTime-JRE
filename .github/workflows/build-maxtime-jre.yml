@@ -2,7 +2,7 @@
 name: Create MaxTime JRE
 
 # Name of the workflow while running
-run-name: Create MaxTime JRE for Java v${{ inputs.javaVersion }} || Issued by @${{ github.actor }}
+run-name: Create MaxTime JRE for Java v${{ inputs.javaVersion }} (${{ inputs.runsOn }}) || Issued by @${{ github.actor }}
 
 on:
   # Workflow has to be manually triggered
@@ -11,7 +11,7 @@ on:
       runsOn:
         description: "What machine should the workflow run on"
         default: "windows-latest"
-        required: false
+        required: true
         type: choice
         options:
           - windows-latest
@@ -20,7 +20,7 @@ on:
       javaVersion:
         description: "Which version of Java should the JRE be based off"
         default: "11"
-        required: false
+        required: true
         type: string
 
 jobs:
@@ -52,6 +52,6 @@ jobs:
       # Upload as an artifact
       - uses: actions/upload-artifact@v3
         with:
-          name: maxtime-jre-${{ inputs.javaVersion }}-latest
+          name: maxtime-jre-v${{ inputs.javaVersion }}-${{ inputs.runsOn }}
           path: ./maxtime-jre.zip
           if-no-files-found: error
