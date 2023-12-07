@@ -7,4 +7,4 @@ A GitHub workflow that creates a custom JRE image of any Java version. Supports 
 - Click on *"Create MaxTime JRE"*
 - Click on *"Run workflow"*
 
-> JRE images can be found on the summary view for the workflow
+> JRE images can be found on the summary view for the workflow and in the releases tab
