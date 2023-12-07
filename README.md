@@ -1,5 +1,10 @@
 # MaxTime-JRE
-A GitHub workflow that creates a custom JRE image of Java 11 (Windows)
+A GitHub workflow that creates a custom JRE image of any Java version. Supports image builds for Windows, MacOS, and Linux systems
 
 ## To run
-Simply fork this repository, click on the "Actions" tab, and select the *Create MaxTime JRE for Java 11* workflow. After running download the freshly built JRE via the summary view
+- [Fork the repository](https://github.com/MaxineToTheStars/MaxTime-JRE/fork)
+- Click on the *"Actions"* tab
+- Click on *"Create MaxTime JRE"*
+- Click on *"Run workflow"*
+
+> JRE images can be found on the summary view for the workflow
