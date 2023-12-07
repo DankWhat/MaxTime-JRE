@@ -1,29 +1,57 @@
-name: Create MaxTime JRE for Java 11
-run-name: create-maxtime-jre11
-on: [push]
-jobs:
-    Build-MaxTime-JRE:
-        # Professor uses Windows 10 so...
-        runs-on: windows-latest
-        steps:
-            # Setup Java
-            - uses: actions/setup-java@v4
-              with:
-                distribution: 'adopt-hotspot'
-                java-version: '11'
+# Name of the workflow
+name: Create MaxTime JRE
 
-            # Create the JRE
-            - run: jlink --add-modules ALL-MODULE-PATH --output ./maxtime-jre --strip-debug --no-man-pages --no-header-files --compress=2
-            
-            # Package as a zip
-            - uses: vimtor/action-zip@v1.1
-              with:
-                files: ./maxtime-jre/
-                dest: maxtime-jre.zip
-            
-            # Upload as artifact
-            - uses: actions/upload-artifact@v3
-              with:
-                name: maxtime-jre-latest
-                path: ./maxtime-jre.zip
-                if-no-files-found: error
+# Name of the workflow while running
+run-name: Create MaxTime JRE for Java v${{ inputs.javaVersion }} || Issued by @${{ github.actor }}
+
+on:
+  # Workflow has to be manually triggered
+  workflow_dispatch:
+    inputs:
+      runsOn:
+        description: "What machine should the workflow run on"
+        default: "windows-latest"
+        required: false
+        type: choice
+        options:
+          - windows-latest
+          - ubuntu-latest
+          - macos-latest
+      javaVersion:
+        description: "Which version of Java should the JRE be based off"
+        default: "11"
+        required: false
+        type: string
+
+jobs:
+  build-maxtime-jre:
+    # Use the specified machine
+    runs-on: ${{ inputs.runsOn }}
+
+    # Configure outputs
+    outputs:
+      MaxTimeJREVersion: ${{ inputs.javaVersion }}
+      MachineUsed: ${{ inputs.runsOn }}
+
+    steps:
+      # Setup Java with specified version
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'adopt-hotspot'
+          java-version: ${{ inputs.javaVersion }}
+      
+      # Create the JRE
+      - run: jlink --add-modules ALL-MODULES-PATH --no-header-files --no-man-pages --strip-debug --compress=2 --output ./maxtime-jre
+
+      # Package as a .zip
+      - uses: vimtor/action-zip@v1.1
+        with:
+          files: .\maxtime-jre\*.*
+          dest: .\maxtime-jre.zip
+      
+      # Upload as an artifact
+      - uses: actions/upload-artifact@v3
+        with:
+          name: maxtime-jre-${{ inputs.javaVersion }}-latest
+          path: .\maxtime-jre.zip
+          if-no-files-found: error
