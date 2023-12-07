@@ -41,7 +41,7 @@ jobs:
           java-version: ${{ inputs.javaVersion }}
       
       # Create the JRE
-      - run: jlink --add-modules ALL-MODULES-PATH --no-header-files --no-man-pages --strip-debug --compress=2 --output ./maxtime-jre
+      - run: jlink --add-modules ALL-MODULE-PATH --no-header-files --no-man-pages --strip-debug --compress=2 --output ./maxtime-jre
 
       # Package as a .zip
       - uses: vimtor/action-zip@v1.1
