@@ -46,12 +46,12 @@ jobs:
       # Package as a .zip
       - uses: vimtor/action-zip@v1.1
         with:
-          files: .\maxtime-jre\*.*
-          dest: .\maxtime-jre.zip
+          files: ./maxtime-jre/*.*
+          dest: ./maxtime-jre.zip
       
       # Upload as an artifact
       - uses: actions/upload-artifact@v3
         with:
           name: maxtime-jre-${{ inputs.javaVersion }}-latest
-          path: .\maxtime-jre.zip
+          path: ./maxtime-jre.zip
           if-no-files-found: error
