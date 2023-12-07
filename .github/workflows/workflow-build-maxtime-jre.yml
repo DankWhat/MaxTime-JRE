@@ -38,9 +38,24 @@ jobs:
       # Create the JRE with jlink
       - run: jlink --add-modules ALL-MODULE-PATH --no-header-files --no-man-pages --strip-debug --compress=2 --output ./maxtime-jre
       
-      # Upload as an artifact
+      # Package the JRE as a .zip file
+      - uses: vimtor/action-zip@v1.1
+        with:
+          files: ./maxtime-jre/
+          dest: ./maxtime-jre.zip
+
+      # Upload the JRE as an artifact
       - uses: actions/upload-artifact@v3
         with:
           name: maxtime-jre-v${{ inputs.javaVersion }}-${{ inputs.runsOn }}
           path: ./maxtime-jre/*
           if-no-files-found: error
+      
+      # Create a new public release
+      - uses: marvinpinto/action-automatic-releases@latest
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          automatic_release_tag: "latest"
+          prerelease: true
+          title: MaxTime JRE for Java v${{ inputs.javaVersion }} (${{ inputs.runsOn }})
+          files: ./maxtime-jre.zip
